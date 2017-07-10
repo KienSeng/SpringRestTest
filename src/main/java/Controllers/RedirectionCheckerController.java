@@ -4,6 +4,7 @@ import Models.Factory.UrlConnector.UrlConnector;
 import Models.RedirectionChecker.RedirectionCheckerCore;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.LinkedHashMap;
@@ -14,9 +15,10 @@ import java.util.LinkedHashMap;
 @RestController
 public class RedirectionCheckerController {
     @RequestMapping(value = "/redirectioncheck", method = RequestMethod.GET)
-    public LinkedHashMap<String, Object> RedirectionCheck(){
-        RedirectionCheckerCore redirection = new RedirectionCheckerCore(new UrlConnector("http://jobstreet.com"), "Redirection of jobstreet.com");
-        redirection.setRedirectedLocation("https://www.jobstreet.com/");
+    public LinkedHashMap<String, Object> RedirectionCheck(@RequestParam(value="url") String url,
+                                                          @RequestParam(value="destUrl", defaultValue = "") String destUrl){
+        RedirectionCheckerCore redirection = new RedirectionCheckerCore(new UrlConnector(url), "Redirection of " + url);
+        redirection.setRedirectedLocation(destUrl);
         redirection.startRedirectionCheck();
         return redirection.getRedirectionResult();
     }
