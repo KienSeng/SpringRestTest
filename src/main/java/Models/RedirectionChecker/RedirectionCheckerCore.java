@@ -11,7 +11,7 @@ import java.util.LinkedHashMap;
 public class RedirectionCheckerCore {
     private UrlConnector urlConnector;
     private LinkedHashMap<String, String> redirectionList = new LinkedHashMap<>();
-    private String startUrl, destinationUrl = null;
+    private String startUrl, destinationUrl;
     private LinkedHashMap<String, Object> redirectionResult = new LinkedHashMap<>();
     private IHttpConnectionFactory connectionFactory;
 
@@ -44,7 +44,8 @@ public class RedirectionCheckerCore {
             } else if (responseCode >= 400 && responseCode < 600){
                 setResultFail("URL return with invalid response code " + responseCode);
             } else if (responseCode == 200){
-                if(destinationUrl != null){
+                if(!destinationUrl.isEmpty()){
+                    System.out.println(destinationUrl);
                     verifyDestinationUrlEqual(currentUrl, destinationUrl);
                 }
             }
